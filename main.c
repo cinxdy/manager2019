@@ -12,13 +12,12 @@ int main(int argc, char* argv[]) {
     char YN;
     scanf("%c",&YN);
     if(YN == 'Y') { 
-	char* filename = create_file(); 
-	count = load_file (userlist, filename);
+	    char* filename = create_file(); 
+	    count = load_file (userlist, filename);
     }
     else return 0;
   }
   else count = load_file(userlist, argv[1]);
-
 
   while(1){
     if(is_login!=1) is_login = login(userlist, count);
@@ -27,17 +26,17 @@ int main(int argc, char* argv[]) {
 
     if(is_login != 1){
     	if(menu_id==1){
-	  join(userlist, count);
-	  count ++;
-	}
+        join(userlist, count);
+        count ++;
+	    }
     	else if (menu_id==2) 	is_login = login(userlist, count);
-	else if(menu_id==3) 	printList(userlist, count);
-	else break;
-    }
+	  else if(menu_id==3) 	printList(userlist, count);
+	  else break;
+      }
     
     else{  
- 	if (menu_id==1) 	logout(&is_login);
-    	else break;
+      if (menu_id==1) 	logout(&is_login);
+      else break;
     }
 
   }
