@@ -7,22 +7,17 @@
 #endif
 
 int load_file(LOGIN* list[], char* filename){
-  Dprintf(printf("load_file();\n"););
-  char id[20],pass[20];
+  Dprintf(printf("load_file(list,filename = %s)\n",filename););
 
   int count=0;
   FILE *datafile = fopen(filename, "r");
 
-  while(!feof(datafile)){
-    fscanf(datafile,"%s %s\n",id,pass);
-    Dprintf(printf("id = %s pass = %s\n",id,pass););
-
-    if(strlen(id)!=0 && strlen(pass)!=0){
-      list[count]=(LOGIN*)malloc(sizeof(LOGIN));
-      strcpy(list[count]->id,id);
-      strcpy(list[count]->password,pass);
-      count++;
-    }
+  while(1){
+    list[count]=(LOGIN*)malloc(sizeof(LOGIN));
+    fscanf(datafile,"%s %s",list[count]->id,list[count]->password);
+    if(feof(datafile)) break;
+    Dprintf(printf("id = %s pass = %s\n",list[count]->id,list[count]->password););
+    count++;
   }
 
   printf("%d records read!\n",count);\
@@ -32,16 +27,22 @@ int load_file(LOGIN* list[], char* filename){
 }
 
 char* create_file(){  
-  Dprintf(printf("create_file();\n"););
-
+  Dprintf(printf("create_file()\n"););
 	FILE *datafile = NULL;
-	char *filename = (char*) malloc(sizeof(char*)*20);
+  char* filename = NULL;
 
+  //get filename
+  filename = (char*) malloc(sizeof(char*)*30);
 	printf("Data File Name : ");
 	scanf("%s",filename);
-	datafile = fopen(filename,"wt");
+
+  //make file
+	datafile = fopen(filename,"w");
+
 	fclose(datafile);
-	return filename;
+  Dprintf(printf("create_file() = filename = %s(%p);\n",filename,filename););
+
+  return filename;
 }
 
 void join(LOGIN* list[], int count){
@@ -116,8 +117,9 @@ void logout(int* is_login){
 }
 
 void save_file(LOGIN* list[], int count, char* filename){
-  Dprintf(printf("save_file();\n"););
+  Dprintf(printf("save_file(list,count = %d,filename = %s);\n",count,filename););
   FILE *datafile = fopen(filename, "w");
+  Dprintf(if(datafile == NULL) printf("NULL pointer!\n"););
 
   for(int i=0; i<count; i++){
     fprintf(datafile, "%s %s\n", list[i]->id, list[i]->password);
